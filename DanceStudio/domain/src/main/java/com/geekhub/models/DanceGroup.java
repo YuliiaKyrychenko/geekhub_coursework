@@ -1,6 +1,7 @@
 package com.geekhub.models;
 
 import com.geekhub.enums.AgeCategorie;
+import com.geekhub.enums.DanceHall;
 import com.geekhub.enums.DaysOfWeek;
 
 import java.util.ArrayList;
@@ -9,26 +10,30 @@ import java.util.List;
 public class DanceGroup {
     private int id;
     private String style;
-    private Person teacher;
+    private int teacherId;
+    private String firstName;
+    private String lastName;
     private AgeCategorie ageCategorie;
-    private String danceHall;
-    private List<DaysOfWeek> dayOfWeek = new ArrayList<>();
+    private DanceHall danceHall;
+    private List<DaysOfWeek> daysOfWeek = new ArrayList<>();
     private String danceTime;
     private List<Person> group = new ArrayList<>();
 
     public DanceGroup(int id,
                       String style,
-                      Person teacher,
+                      int teacherId,
+                      String firstName,
+                      String lastName,
                       AgeCategorie ageCategorie,
-                      String danceHall,
-                      List<DaysOfWeek> dayOfWeek,
+                      DanceHall danceHall,
                       String danceTime) {
         this.id = id;
         this.style = style;
-        this.teacher = teacher;
+        this.teacherId = teacherId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.ageCategorie = ageCategorie;
         this.danceHall = danceHall;
-        this.dayOfWeek = dayOfWeek;
         this.danceTime = danceTime;
     }
 
@@ -48,14 +53,6 @@ public class DanceGroup {
         this.style = style;
     }
 
-    public Person getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Person teacher) {
-        this.teacher = teacher;
-    }
-
     public AgeCategorie getAgeCategorie() {
         return ageCategorie;
     }
@@ -64,20 +61,20 @@ public class DanceGroup {
         this.ageCategorie = ageCategorie;
     }
 
-    public String getDanceHall() {
+    public DanceHall getDanceHall() {
         return danceHall;
     }
 
-    public void setDanceHall(String danceHall) {
+    public void setDanceHall(DanceHall danceHall) {
         this.danceHall = danceHall;
     }
 
-    public List<DaysOfWeek> getDayOfWeek() {
-        return dayOfWeek;
+    public List<DaysOfWeek> getDaysOfWeek() {
+        return daysOfWeek;
     }
 
-    public void setDayOfWeek(List<DaysOfWeek> dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDaysOfWeek(List<DaysOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 
     public String getDanceTime() {
@@ -94,5 +91,29 @@ public class DanceGroup {
 
     public void setGroup(List<Person> group) {
         this.group = group;
+    }
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

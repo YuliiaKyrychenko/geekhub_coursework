@@ -4,25 +4,54 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Attendance {
-    private Person student;
+    private int id;
+    private int studentId;
+    private String firstName;
+    private String lastName;
     private String month;
     private Map<String, Boolean> personAttendance = new HashMap<>();
     private final int pricePerLesson = 60;
     private int discount;
 
-    public Attendance(Person student, String month, Map<String, Boolean> personAttendance, int discount) {
-        this.student = student;
+    public Attendance(int id, int studentId, String firstName, String lastName, String month, int discount) {
+        this.id = id;
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.month = month;
-        this.personAttendance = personAttendance;
         this.discount = discount;
     }
 
-    public Person getStudent() {
-        return student;
+    public int getId() {
+        return id;
     }
 
-    public void setStudent(Person student) {
-        this.student = student;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMonth() {

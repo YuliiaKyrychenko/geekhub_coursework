@@ -1,11 +1,21 @@
 package com.geekhub.models;
 
 public class Salary {
+    private int id;
     private Person teacher;
     private final int rate = 6000;
 
-    public Salary(Person teacher) {
+    public Salary(int id, Person teacher) {
+        this.id = id;
         this.teacher = teacher;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Person getTeacher() {
