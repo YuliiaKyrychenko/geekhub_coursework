@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="DanceStudio" target="17" />
+      <module name="DanceStudio.domain" target="17" />
+      <module name="DanceStudio.domain.main" target="17" />
+      <module name="DanceStudio.domain.test" target="17" />
+      <module name="DanceStudio.main" target="17" />
+      <module name="DanceStudio.test" target="17" />
+      <module name="DanceStudio.web-app" target="17" />
+      <module name="DanceStudio.web-app.main" target="17" />
+      <module name="DanceStudio.web-app.test" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
