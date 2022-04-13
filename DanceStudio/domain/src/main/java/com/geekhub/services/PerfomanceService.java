@@ -2,10 +2,7 @@ package com.geekhub.services;
 
 import com.geekhub.config.AppConfig;
 import com.geekhub.config.DatabaseConfig;
-import com.geekhub.enums.AgeCategorie;
-import com.geekhub.enums.DanceHall;
 import com.geekhub.exceptions.ValidationException;
-import com.geekhub.models.DanceGroup;
 import com.geekhub.models.Performance;
 import com.geekhub.sources.PerfomanceSource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -61,7 +58,7 @@ public class PerfomanceService {
                         rs.getString("place"),
                         rs.getInt("price"))
         );
-        return perfomanceSource.get(id);
+        return performance;
     }
 
     public void deletePerformance(int id) {

@@ -17,18 +17,24 @@ public class AttendanceService {
 
     private final AttendanceSource attendanceSource;
     private final PersonService personService;
-    final String INSERT_QUERY = "INSERT INTO attendance (id, studentId, firstName, lastName, month, discount) VALUES (" +
-            ":id, :studentId, :firstName, :lastName, :month, :discount)";
+    final String INSERT_QUERY = "INSERT INTO attendance (id, studentId, firstName, lastName, month) VALUES (" +
+            ":id, :studentId, :firstName, :lastName, :month)";
     final String GET_QUERY = "SELECT * from attendance where id = :id";
     final String DELETE_QUERY = "DELETE from attendance where id = :id";
     final String SHOW_ALL_QUERY = "SELECT * from attendance";
+    final String UPDATE_CURRENT_ATENDANCE = "UPDATE attendance SET currentAttendance = :currentAttendance " +
+            "WHERE groupId = :groupId AND studentId = :studentId";
+    final String UPDATE_GENERAL_ATENDANCE = "UPDATE attendance SET generalAttendace = :generalAttendace " +
+            "WHERE groupId = :groupId AND studentId = :studentId";
+    final String UPDATE_GENERAL_SUM = "UPDATE attendance SET generalSum = :generalSum " +
+            "WHERE groupId = :groupId AND studentId = :studentId";
 
     public AttendanceService(AttendanceSource attendanceSource, PersonService personService) {
         this.attendanceSource = attendanceSource;
         this.personService = personService;
     }
 
-    public Attendance addNewAttendance(int studentId, String month, int discount) {
+    public Attendance addNewAttendance(int studentId, String month) {
         if(month.isBlank()) {
             throw new ValidationException("Validation has failed cause of empty fields");
         }
@@ -36,7 +42,7 @@ public class AttendanceService {
         Map<String, Boolean> personAttendance = new HashMap<>();
         int id = (int) (Math.random()*(600+1)) - 200;
         Attendance newAttendance = new Attendance(id, studentId, student.getFirstName(), student.getLastName(),
-                month, discount);
+                month);
         newAttendance.setPersonAttendance(personAttendance);
         attendanceSource.add(newAttendance);
 
@@ -49,7 +55,6 @@ public class AttendanceService {
         params.put("firstName", student.getFirstName());
         params.put("lastName", student.getLastName());
         params.put("month", month);
-        params.put("discount", discount);
         jdbcTemplate.update(INSERT_QUERY, params);
         return newAttendance;
     }
@@ -64,11 +69,10 @@ public class AttendanceService {
                         rs.getInt("studentId"),
                         rs.getString("firstName"),
                         rs.getString("lastName"),
-                        rs.getString("month"),
-                        rs.getInt("discount")
+                        rs.getString("month")
                 )
         );
-        return attendanceSource.get(id);
+        return attendance;
     }
 
     public void deleteAttendanceById(int id) {
@@ -93,8 +97,7 @@ public class AttendanceService {
                     rs.getInt("studentId"),
                     rs.getString("firstName"),
                     rs.getString("lastName"),
-                    rs.getString("month"),
-                    rs.getInt("discount")
+                    rs.getString("month")
             );
             return attendance;
         });
@@ -119,5 +122,45 @@ public class AttendanceService {
             }
         }
         return count;
+    }
+
+    public int generateCurrentAttendance(int groupId, int studentId, int attandanceId) {
+        int attendance = countAttandance(attandanceId);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
+                AppConfig.class);
+        NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        int currentAttendance =
+                jdbcTemplate.update(UPDATE_CURRENT_ATENDANCE, Map.of("groupId", groupId, "studentId", studentId,
+                        "currentAttendance", attendance));
+        return currentAttendance;
+    }
+
+    public int generateGeneralAttendance(int groupId, int studentId, int attandanceId) {
+        int attendance = countAttandance(attandanceId);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
+                AppConfig.class);
+        NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        int generalAttendance =
+                jdbcTemplate.update(UPDATE_GENERAL_ATENDANCE, Map.of("groupId", groupId, "studentId", studentId,
+                        "generalAttendace", attendance));
+        return generalAttendance;
+    }
+
+    public int generateGeneralSum(int groupId, int studentId, int attandanceId) {
+        int attendance = countAttandance(attandanceId);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
+                AppConfig.class);
+        NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        int generalSum =
+                jdbcTemplate.update(UPDATE_GENERAL_SUM, Map.of("groupId", groupId, "studentId", studentId,
+                        "generalSum", attendance));
+        return generalSum;
+    }
+
+    public int generateGeneralSum(int attandanceId) {
+        Attendance attendance = attendanceSource.get(attandanceId);
+        int sum = countAttandance(attandanceId);
+        int generalSum = sum * attendance.getPricePerLesson();
+        return generalSum;
     }
 }

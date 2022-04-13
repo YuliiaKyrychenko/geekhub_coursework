@@ -2,12 +2,18 @@ package com.geekhub.models;
 
 public class Salary {
     private int id;
-    private Person teacher;
+    private int teacherId;
+    private String firstName;
+    private String lastName;
+    private String month;
     private final int rate = 6000;
 
-    public Salary(int id, Person teacher) {
+    public Salary(int id, int teacherId, String firstName, String lastName, String month) {
         this.id = id;
-        this.teacher = teacher;
+        this.teacherId = teacherId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.month = month;
     }
 
     public int getId() {
@@ -18,12 +24,36 @@ public class Salary {
         this.id = id;
     }
 
-    public Person getTeacher() {
-        return teacher;
+    public int getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(Person teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 
     public int getRate() {

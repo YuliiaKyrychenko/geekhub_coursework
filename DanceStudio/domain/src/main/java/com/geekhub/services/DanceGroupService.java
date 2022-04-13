@@ -92,7 +92,7 @@ public class DanceGroupService {
                         rs.getString("danceTime")
                 )
         );
-        return danceGroupSource.get(id);
+        return danceGroup;
     }
 
     public void deleteDanceGroup(int id) {

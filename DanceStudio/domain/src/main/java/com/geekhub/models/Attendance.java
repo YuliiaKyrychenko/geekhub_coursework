@@ -11,15 +11,13 @@ public class Attendance {
     private String month;
     private Map<String, Boolean> personAttendance = new HashMap<>();
     private final int pricePerLesson = 60;
-    private int discount;
 
-    public Attendance(int id, int studentId, String firstName, String lastName, String month, int discount) {
+    public Attendance(int id, int studentId, String firstName, String lastName, String month) {
         this.id = id;
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.month = month;
-        this.discount = discount;
     }
 
     public int getId() {
@@ -74,11 +72,4 @@ public class Attendance {
         return pricePerLesson;
     }
 
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
 }
