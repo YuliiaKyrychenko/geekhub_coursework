@@ -16,23 +16,23 @@ import java.util.Map;
 public class PersonService {
 
     private final PersonSource personSource;
-    final String INSERT_QUERY = "INSERT INTO person (id, firstName, lastName, contacts, birthday, role)" +
+    final String INSERT_QUERY = "INSERT INTO crew (id, firstName, lastName, contacts, birthday, role)" +
             " VALUES (:id, :firstName, :lastName, :contacts, :birthday, :role)";
-    final String GET_QUERY = "SELECT * from person where id = :id";
-    final String DELETE_QUERY = "DELETE from person where id = :id";
-    final String SHOW_ALL_QUERY = "SELECT * from person";
+    final String GET_QUERY = "SELECT * from crew where id = :id";
+    final String DELETE_QUERY = "DELETE from crew where id = :id";
+    final String SHOW_ALL_QUERY = "SELECT * from crew";
 
     public PersonService(PersonSource personSource) {
         this.personSource = personSource;
     }
 
-    public Person addNewPerson(String firstName, String lastName, String contacts, String birthday, Role role) {
+    public Person addNewPerson(String firstName, String lastName, String contacts, String birthday, String role) {
         if(firstName.isBlank()|| lastName.isBlank() || contacts.isBlank() || birthday.isBlank() ||
                 String.valueOf(role).isBlank()) {
             throw new ValidationException("Validation has failed cause of empty fields");
         }
         int id = (int) (Math.random()*(600+1)) - 200;
-        Person newPerson = new Person(id, firstName, lastName, contacts, birthday, role);
+        Person newPerson = new Person(id, firstName, lastName, contacts, birthday, Role.valueOf(role));
         personSource.add(newPerson);
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
@@ -76,9 +76,6 @@ public class PersonService {
 
     public String showPeople() {
         String people = "";
-        for (int i = 0; i < personSource.showPeople().size(); i++) {
-            people += personSource.get(i).getFirstName() + " " + personSource.get(i).getLastName() +"\n";
-        }
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
@@ -96,6 +93,8 @@ public class PersonService {
         });
         for (Person person : list) {
             System.out.println("id: " + person.getId() + " " + person.getFirstName() + " " + person.getFirstName());
+            people += person.getId() + " " + person.getRole() + " " + person.getFirstName() + " "
+                    + person.getLastName() + " " + person.getContacts() + " " + person.getBirthday() + "\n";
         }
         return people;
     }

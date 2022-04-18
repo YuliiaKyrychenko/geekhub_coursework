@@ -36,15 +36,14 @@ public class DanceGroupService {
 
     public DanceGroup addNewDanceGroup(String style,
                                        int teacherId,
-                                       String firstName,
-                                       String lastName,
-                                       AgeCategorie ageCategorie,
-                                       DanceHall danceHall,
+                                       String ageCategorie,
+                                       String danceHall,
+                                       String daysOfWeek,
                                        String danceTime) {
         if(style.isBlank() || ageCategorie == null || danceHall == null || danceTime.isBlank()) {
             throw new ValidationException("Validation has failed cause of empty fields");
         }
-        List<DaysOfWeek> daysOfWeek = new ArrayList<>();
+//        List<DaysOfWeek> daysOfWeek = new ArrayList<>();
         List<Person> group = new ArrayList<>();
         int id = (int) (Math.random()*(600+1)) - 200;
         Person teacher = personService.getPersonById(teacherId);
@@ -53,10 +52,10 @@ public class DanceGroupService {
                 teacherId,
                 teacher.getFirstName(),
                 teacher.getLastName(),
-                ageCategorie,
-                danceHall,
+                AgeCategorie.valueOf(ageCategorie),
+                DanceHall.valueOf(danceHall),
                 danceTime);
-        newDanceGroup.setDaysOfWeek(daysOfWeek);
+//        newDanceGroup.setDaysOfWeek(daysOfWeek);
         newDanceGroup.setGroup(group);
         danceGroupSource.add(newDanceGroup);
 
@@ -71,6 +70,7 @@ public class DanceGroupService {
         params.put("lastName", teacher.getLastName());
         params.put("ageCategorie", ageCategorie);
         params.put("danceHall", danceHall);
+        params.put("daysOfWeek", daysOfWeek);
         params.put("danceTime", danceTime);
         jdbcTemplate.update(INSERT_QUERY, params);
         return newDanceGroup;
@@ -105,10 +105,6 @@ public class DanceGroupService {
 
     public String showDanceGroups() {
         String danceGroups = "";
-        for (int i = 0; i < danceGroupSource.showGroups().size(); i++) {
-            danceGroups += danceGroupSource.get(i).getId() + " " + danceGroupSource.get(i).getStyle() + " " +
-                    danceGroupSource.get(i).getTeacherId() +"\n";
-        }
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
@@ -128,7 +124,34 @@ public class DanceGroupService {
         });
         for (DanceGroup danceGroup : list) {
             System.out.println("id: " + danceGroup.getId() + " teacher id: " + danceGroup.getTeacherId());
+            danceGroups += danceGroup.getId() + " " + danceGroup.getTeacherId() + " " + danceGroup.getFirstName() + " "
+                    + danceGroup.getLastName() + " " + danceGroup.getStyle() + " " + danceGroup.getAgeCategorie() + " " +
+                    danceGroup.getDanceHall() + " " + danceGroup.getDaysOfWeek() + " " + danceGroup.getDanceTime() + "\n";
         }
         return danceGroups;
+    }
+
+    public String showPeopleInGroups(int id) {
+        String peopleInAGroup = "";
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                DatabaseConfig.class, AppConfig.class);
+        NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        DanceGroup danceGroup = jdbcTemplate.queryForObject(GET_QUERY, Map.of("id", id), (rs, rowNum) ->
+                new DanceGroup(
+                        rs.getInt("id"),
+                        rs.getString("style"),
+                        rs.getInt("teacherId"),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        AgeCategorie.valueOf(rs.getString("ageCategorie")),
+                        DanceHall.valueOf(rs.getString("danceHall")),
+                        rs.getString("danceTime")
+                )
+        );
+        for (Person person : danceGroup.getGroup()) {
+            peopleInAGroup += person.getId() + " " + person.getRole() + " " + person.getFirstName() + " "
+                    + person.getLastName() + " " + person.getContacts() + " " + person.getBirthday() + "\n";
+        }
+        return peopleInAGroup;
     }
 }

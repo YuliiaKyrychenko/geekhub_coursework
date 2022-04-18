@@ -71,11 +71,6 @@ public class PerfomanceService {
 
     public String showPerformances() {
         String performances = "";
-        for (int i = 0; i < perfomanceSource.showPerfomances().size(); i++) {
-            performances += perfomanceSource.get(i).getId() + " " + perfomanceSource.get(i).getName() + " " +
-                    perfomanceSource.get(i).getPlace() +
-                    perfomanceSource.get(i).getDate() +"\n";
-        }
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
@@ -92,6 +87,8 @@ public class PerfomanceService {
         });
         for (Performance performance : list) {
             System.out.println("id: " + performance.getId() + " " + performance.getName());
+            performances += performance.getId() + " " + performance.getName() + " " + performance.getPlace() + " "
+                    + performance.getDate() + " " + performance.getPrice() + "\n";
         }
         return performances;
     }

@@ -80,10 +80,6 @@ public class SalaryService {
 
     public String showSalaries() {
         String salaries = "";
-        for (int i = 0; i < salarySource.showSalaries().size(); i++) {
-            salaries += salarySource.get(i).getId() + " " + salarySource.get(i).getTeacherId() + " " +
-                    salarySource.get(i).getFirstName() + " " + salarySource.get(i).getLastName() +"\n";
-        }
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
@@ -101,6 +97,8 @@ public class SalaryService {
         for (Salary salary : list) {
             System.out.println("id: " + salary.getId() + " " + salary.getTeacherId() + " " +
                     salary.getFirstName() + " " + salary.getFirstName());
+            salaries += salary.getId() + " " + salary.getTeacherId() + " " + salary.getFirstName() + " "
+                    + salary.getLastName() + " " + salary.getMonth() + "\n";
         }
         return salaries;
     }

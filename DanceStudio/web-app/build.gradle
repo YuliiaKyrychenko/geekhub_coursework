@@ -25,7 +25,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot:2.6.2'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.5'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    providedCompile("javax.servlet:javax.servlet-api:4.0.1")
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'

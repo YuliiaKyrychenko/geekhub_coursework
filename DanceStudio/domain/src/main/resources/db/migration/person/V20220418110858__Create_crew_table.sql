@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS Person (
+CREATE TABLE IF NOT EXISTS Crew (
     id serial PRIMARY KEY,
     firstName VARCHAR (256) not null,
     lastName VARCHAR (256) not null,

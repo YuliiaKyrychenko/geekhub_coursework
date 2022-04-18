@@ -28,6 +28,8 @@ public class AttendanceService {
             "WHERE groupId = :groupId AND studentId = :studentId";
     final String UPDATE_GENERAL_SUM = "UPDATE attendance SET generalSum = :generalSum " +
             "WHERE groupId = :groupId AND studentId = :studentId";
+    final String UPDATE_GROUP_ID = "UPDATE attendance SET groupId = :groupId " +
+            "WHERE id = :id AND studentId = :studentId";
 
     public AttendanceService(AttendanceSource attendanceSource, PersonService personService) {
         this.attendanceSource = attendanceSource;
@@ -85,9 +87,6 @@ public class AttendanceService {
 
     public String showAttendances() {
         String attendances = "";
-        for (int i = 0; i < attendanceSource.showAttendances().size(); i++) {
-            attendances += attendanceSource.get(i).getId() + " " + attendanceSource.get(i).getStudentId() +"\n";
-        }
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
@@ -103,6 +102,8 @@ public class AttendanceService {
         });
         for (Attendance attendance : list) {
             System.out.println("id: " + attendance.getId() + " student id: " + attendance.getStudentId());
+            attendances += attendance.getId() + " " + attendance.getStudentId() + " " + attendance.getFirstName() + " "
+                    + attendance.getLastName() + " " + attendance.getMonth();
         }
         return attendances;
     }
@@ -147,20 +148,20 @@ public class AttendanceService {
     }
 
     public int generateGeneralSum(int groupId, int studentId, int attandanceId) {
-        int attendance = countAttandance(attandanceId);
+        Attendance attendance = attendanceSource.get(attandanceId);
+        int attendanceSum = countAttandance(attandanceId) * attendance.getPricePerLesson();
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
                 AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
-        int generalSum =
-                jdbcTemplate.update(UPDATE_GENERAL_SUM, Map.of("groupId", groupId, "studentId", studentId,
-                        "generalSum", attendance));
-        return generalSum;
+        jdbcTemplate.update(UPDATE_GENERAL_SUM, Map.of("groupId", groupId, "studentId", studentId,
+                "generalSum", attendanceSum));
+        return attendanceSum;
     }
 
-    public int generateGeneralSum(int attandanceId) {
-        Attendance attendance = attendanceSource.get(attandanceId);
-        int sum = countAttandance(attandanceId);
-        int generalSum = sum * attendance.getPricePerLesson();
-        return generalSum;
+    public void changeGroupId(int attendanceId, int groupId, int studentId) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
+                AppConfig.class);
+        NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
+        jdbcTemplate.update(UPDATE_GROUP_ID, Map.of("id", attendanceId,"groupId", groupId, "studentId", studentId));
     }
 }

@@ -3,5 +3,5 @@ CREATE TABLE IF NOT EXISTS Performance (
     name VARCHAR (256) not null,
     date VARCHAR (256) not null,
     place VARCHAR (256) not null,
-    price VARCHAR (256) not null
+    price serial not null
     );
