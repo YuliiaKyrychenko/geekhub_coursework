@@ -1,0 +1,5 @@
+rootProject.name = 'geekhub_coursework'
+include 'DanceStudio'
+include 'domain'
+include 'web-app'
+
