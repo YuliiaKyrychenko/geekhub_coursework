@@ -1,4 +1,4 @@
-package api.console;
+package api.console.controllers;
 
 import com.geekhub.models.Attendance;
 import com.geekhub.models.DanceGroup;

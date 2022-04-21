@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS Attendance (
     lastName VARCHAR (256) not null,
     month VARCHAR (256) not null,
     currentAttendance serial not null,
-    generalAttendace serial not null,
+    generalAttendance serial not null,
     generalSum serial not null
     );

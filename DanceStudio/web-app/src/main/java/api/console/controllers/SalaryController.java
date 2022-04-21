@@ -1,4 +1,4 @@
-package api.console;
+package api.console.controllers;
 
 import com.geekhub.models.Salary;
 import com.geekhub.services.SalaryService;
@@ -52,10 +52,13 @@ public class SalaryController {
     }
 
     @PutMapping("/update")
-    public String updateSalary(@RequestParam(name = "groupId") String groupId,
-                               @RequestParam(name = "month") String month,
-                               @RequestParam (name = "teacherId") String teacherId) {
-        double salary = salaryService.updateSalary(Integer.valueOf(groupId), month, Integer.valueOf(teacherId));
-        return "The salary for a teacher with id: " + teacherId + " is: " + salary;
+    public String updateSalary(@RequestParam(name = "id") String salaryId,
+                               @RequestParam(name = "groupId") String groupId,
+                               @RequestParam (name = "attendanceId") String attendanceId) {
+        int salary = salaryService.updateSalary(
+                Integer.parseInt(salaryId),
+                Integer.parseInt(groupId),
+                Integer.parseInt(attendanceId));
+        return "The salary is: " + salary;
     }
 }

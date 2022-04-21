@@ -3,6 +3,7 @@ package com.geekhub.services;
 import com.geekhub.config.AppConfig;
 import com.geekhub.config.DatabaseConfig;
 import com.geekhub.exceptions.ValidationException;
+import com.geekhub.models.DanceGroup;
 import com.geekhub.models.Person;
 import com.geekhub.models.Salary;
 import com.geekhub.sources.SalarySource;
@@ -17,19 +18,24 @@ public class SalaryService {
 
     private final SalarySource salarySource;
     private final PersonService personService;
+    private final AttendanceService attendanceService;
+    private final DanceGroupService danceGroupService;
 
     final String INSERT_QUERY = "INSERT INTO salary (id, teacherId, firstName, lastName, month)" +
             " VALUES (:id, :teacherId, :firstName, :lastName, :month)";
     final String GET_QUERY = "SELECT * from salary where id = :id";
     final String DELETE_QUERY = "DELETE from salary where id = :id";
     final String SHOW_ALL_QUERY = "SELECT * from salary";
-    final String UPDATE_SALARY = "UPDATE salary SET salary = :salary WHERE teacherId = :teacherId";
-    final String GET_ALL_ATTENDANCE =
-            "SELECT SUM (generalSum) from attendance where groupId = :groupId AND month = :month";
+    final String UPDATE_SALARY = "UPDATE salary SET salary = :salary WHERE teacherId = :teacherId AND month = :month";
 
-    public SalaryService(SalarySource salarySource, PersonService personService) {
+    public SalaryService(SalarySource salarySource,
+                         PersonService personService,
+                         AttendanceService attendanceService,
+                         DanceGroupService danceGroupService) {
         this.salarySource = salarySource;
         this.personService = personService;
+        this.attendanceService = attendanceService;
+        this.danceGroupService = danceGroupService;
     }
 
     public Salary addNewSalary(int teacherId, String month) {
@@ -103,14 +109,17 @@ public class SalaryService {
         return salaries;
     }
 
-    public double updateSalary(int groupId, String month, int teacherId) {
+    public int updateSalary(int id, int groupId, int attendanceId) {
+        Salary salary = getSalaryById(id);
+        DanceGroup danceGroup = danceGroupService.getDanceGroupById(groupId);
+        int teacherId = danceGroup.getTeacherId();
+        String month = attendanceService.getAttendanceById(attendanceId).getMonth();
+        int attendanceSum = attendanceService.getGeneralSum(attendanceId) + salary.getRate();
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 DatabaseConfig.class, AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
-        int generalAttendance =
-                jdbcTemplate.update(GET_ALL_ATTENDANCE, Map.of("groupId", groupId, "month", month));
-        double salary = 6000 + generalAttendance;
-        jdbcTemplate.update(UPDATE_SALARY, Map.of("salary", salary, "teacherId", teacherId));
-        return salary;
+        int salarySum = jdbcTemplate.update(UPDATE_SALARY, Map.of("salary", attendanceSum, "teacherId", teacherId,
+                "month", month));
+        return salarySum;
     }
 }

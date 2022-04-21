@@ -1,15 +1,11 @@
 package com.geekhub.models;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Attendance {
     private int id;
     private int studentId;
     private String firstName;
     private String lastName;
     private String month;
-    private Map<String, Boolean> personAttendance = new HashMap<>();
     private final int pricePerLesson = 60;
 
     public Attendance(int id, int studentId, String firstName, String lastName, String month) {
@@ -58,14 +54,6 @@ public class Attendance {
 
     public void setMonth(String month) {
         this.month = month;
-    }
-
-    public Map<String, Boolean> getPersonAttendance() {
-        return personAttendance;
-    }
-
-    public void setPersonAttendance(Map<String, Boolean> personAttendance) {
-        this.personAttendance = personAttendance;
     }
 
     public int getPricePerLesson() {

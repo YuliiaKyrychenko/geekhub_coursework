@@ -56,7 +56,10 @@ public class AppConfig {
     }
 
     @Bean
-    public SalaryService salaryService(SalarySource salarySource, PersonService personService) {
-        return new SalaryService(salarySource, personService);
+    public SalaryService salaryService(SalarySource salarySource,
+                                       PersonService personService,
+                                       AttendanceService attendanceService,
+                                       DanceGroupService danceGroupService) {
+        return new SalaryService(salarySource, personService, attendanceService, danceGroupService);
     }
 }

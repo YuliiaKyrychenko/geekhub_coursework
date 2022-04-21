@@ -1,4 +1,4 @@
-package api.console;
+package api.console.controllers;
 
 import com.geekhub.models.Attendance;
 import com.geekhub.services.AttendanceService;
@@ -62,55 +62,45 @@ public class AttendanceController {
         return "You have updated: " + attendanceId + " attendance";
     }
 
-    @PutMapping("/addAttendance")
-    public String addAttendance(@RequestParam(name = "attandanceId") String attandanceId,
-                                          @RequestParam (name = "date") String date,
-                                          @RequestParam (name = "isPresent") String isPresent) {
-        String presence = "";
-        Attendance attendance = attendanceService.getAttendanceById(Integer.parseInt(attandanceId));
-        attendance.getPersonAttendance().put(date, Boolean.valueOf(isPresent));
-        if(Boolean.parseBoolean(isPresent)) {
-            presence += " was in training";
-        }
-        else {
-            presence += " wasn`t in training";
-        }
-        return date + " student with id: " + attendance.getStudentId() + presence;
-    }
-
     @PutMapping("/add-current-attendance")
-    public String updateCurrentAttendance(@RequestParam(name = "groupId") String groupId,
+    public String updateCurrentAttendance(@RequestParam(name = "id") String attendanceId,
+                                          @RequestParam(name = "groupId") String groupId,
                                           @RequestParam (name = "studentId") String studentId,
-                                          @RequestParam (name = "attandanceId") String attandanceId) {
-        int currentAttendance = attendanceService.generateCurrentAttendance(
+                                          @RequestParam (name = "currentNumber") String currentAttendanceNumber) {
+        int currentAttendance = attendanceService.updateCurrentAttendance(
+                Integer.parseInt(attendanceId),
                 Integer.parseInt(groupId),
                 Integer.parseInt(studentId),
-                Integer.parseInt(attandanceId));
+                Integer.parseInt(currentAttendanceNumber));
         return "Current attendance for a student with id: " + studentId + " in group with id: " + groupId + " is: " +
-                currentAttendance;
+                currentAttendanceNumber;
     }
 
     @PutMapping("/add-general-attendance")
-    public String updateGeneralAttendance(@RequestParam(name = "groupId") String groupId,
+    public String updateGeneralAttendance(@RequestParam(name = "id") String attendanceId,
+                                          @RequestParam(name = "groupId") String groupId,
                                           @RequestParam (name = "studentId") String studentId,
-                                          @RequestParam (name = "attandanceId") String attandanceId) {
-        int generalAttendance = attendanceService.generateGeneralAttendance(
+                                          @RequestParam (name = "generalNumber") String generalAttendanceNumber) {
+        int generalAttendance = attendanceService.updateGeneralAttendance(
+                Integer.parseInt(attendanceId),
                 Integer.parseInt(groupId),
                 Integer.parseInt(studentId),
-                Integer.parseInt(attandanceId));
+                Integer.parseInt(generalAttendanceNumber));
         return "General attendance for a student with id: " + studentId + " in group with id: " + groupId + " is: " +
-                generalAttendance;
+                generalAttendanceNumber;
     }
 
     @PutMapping("/add-general-sum")
-    public String updateGeneralSum(@RequestParam(name = "groupId") String groupId,
-                                          @RequestParam (name = "studentId") String studentId,
-                                          @RequestParam (name = "attandanceId") String attandanceId) {
-        int generalAttendance = attendanceService.generateGeneralSum(
+    public String updateGeneralSum(@RequestParam(name = "id") String attendanceId,
+                                   @RequestParam(name = "groupId") String groupId,
+                                   @RequestParam (name = "studentId") String studentId,
+                                   @RequestParam (name = "generalSum") String attandanceGeneralSum) {
+        int generalAttendance = attendanceService.updateGeneralSum(
+                Integer.parseInt(attendanceId),
                 Integer.parseInt(groupId),
                 Integer.parseInt(studentId),
-                Integer.parseInt(attandanceId));
+                Integer.parseInt(attandanceGeneralSum));
         return "General attendance for a student with id: " + studentId + " in group with id: " + groupId + " is: " +
-                generalAttendance;
+                attandanceGeneralSum;
     }
 }

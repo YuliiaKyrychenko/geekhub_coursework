@@ -1,4 +1,4 @@
-package api.console;
+package api.console.controllers;
 
 import com.geekhub.models.Person;
 import com.geekhub.services.PersonService;
@@ -41,7 +41,7 @@ public class PersonController {
         Person person = personService.getPersonById(id);
         int personId = person.getId();
         personService.deletePerson(id);
-        return "You have deleted: " + personId  + " person";
+        return "You have deleted: " + personId  + "templates/person";
     }
 
     @PutMapping("/add")
