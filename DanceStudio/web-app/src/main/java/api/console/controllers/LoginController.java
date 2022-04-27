@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 @ComponentScan(basePackages = {"com.geekhub.config"})
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 
     @RequestMapping(
@@ -16,8 +15,14 @@ public class LoginController {
             consumes = MediaType.ALL_VALUE
     )
 
-    @PostMapping
-    public String login(@PathVariable String username, @PathVariable String password) {
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @ModelAttribute
+    @GetMapping("/login-successful")
+    public String loginSuccessful() {
         return "login";
     }
 }

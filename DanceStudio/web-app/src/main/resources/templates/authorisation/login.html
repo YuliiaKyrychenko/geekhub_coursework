@@ -7,6 +7,9 @@
     <form name="f" th:action="@{/login}" method="post">
         <fieldset>
             <legend>Please Login</legend>
+            <div th:if="${param.login}">
+                You have logged in.
+            </div>
             <div th:if="${param.error}">
                 Invalid username and password.
             </div>
@@ -23,3 +26,4 @@
 </div>
 </body>
 </html>
+
