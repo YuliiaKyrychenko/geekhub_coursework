@@ -1,0 +1,2 @@
+INSERT INTO crew (id, firstName, lastName, contacts, birthday, role) VALUES (11, 'Lilly', 'Smith', '123-123', '11.11.2011', 'STUDENT'),
+                                                                            (12, 'Harry', 'Potter', '234-234', '12.12.1992', 'TEACHER')

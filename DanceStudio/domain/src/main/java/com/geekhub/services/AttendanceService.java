@@ -112,26 +112,22 @@ public class AttendanceService {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
                 AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
-        int currentAttendance =
-                jdbcTemplate.update(UPDATE_CURRENT_ATTENDANCE, Map.of(
-                        "currentAttendance", currentAttendanceNumber,
-                        "groupId", groupId,
-                        "studentId", studentId,
-                        "id", attandanceId));
-        return currentAttendance;
+        return jdbcTemplate.update(UPDATE_CURRENT_ATTENDANCE, Map.of(
+                "currentAttendance", currentAttendanceNumber,
+                "groupId", groupId,
+                "studentId", studentId,
+                "id", attandanceId));
     }
 
     public int updateGeneralAttendance(int attandanceId, int groupId, int studentId, int generalAttendanceNumber) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
                 AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
-        int generalAttendance =
-                jdbcTemplate.update(UPDATE_GENERAL_ATTENDANCE, Map.of(
-                        "generalAttendance", generalAttendanceNumber,
-                        "groupId", groupId,
-                        "studentId", studentId,
-                        "id", attandanceId));
-        return generalAttendance;
+        return jdbcTemplate.update(UPDATE_GENERAL_ATTENDANCE, Map.of(
+                "generalAttendance", generalAttendanceNumber,
+                "groupId", groupId,
+                "studentId", studentId,
+                "id", attandanceId));
     }
 
     public int updateGeneralSum(int attandanceId, int groupId, int studentId, int attandanceGeneralSum) {
@@ -160,7 +156,6 @@ public class AttendanceService {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class,
                 AppConfig.class);
         NamedParameterJdbcTemplate jdbcTemplate = (NamedParameterJdbcTemplate) context.getBean("jdbcTemplate");
-        int sum = jdbcTemplate.update(GET_GENERAL_SUM, Map.of("id", attendanceId));
-        return sum;
+        return jdbcTemplate.update(GET_GENERAL_SUM, Map.of("id", attendanceId));
     }
 }

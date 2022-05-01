@@ -1,0 +1,1 @@
+INSERT INTO performance (id, name, date, place, price) VALUES (11, 'Test', '11.11.2011', 'Ukraine, Cherkasy', 0)
